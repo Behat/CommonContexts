@@ -13,10 +13,8 @@ use Behat\Behat\Context\ClosuredContextInterface,
  *
  * in order to be able to load env.php and bootstrap.php configs
  */
-if (defined('BEHAT1_SUPPORT_PATH')) {
-    if (file_exists(BEHAT1_SUPPORT_PATH.'/bootstrap.php')) {
-        require_once BEHAT1_SUPPORT_PATH.'/bootstrap.php';
-    }
+if (defined('BEHAT1_SUPPORT_PATH') && file_exists(BEHAT1_SUPPORT_PATH.'/bootstrap.php')) {
+    require_once BEHAT1_SUPPORT_PATH.'/bootstrap.php';
 }
 
 /**
@@ -32,11 +30,9 @@ class Behat1BCContext extends BehatContext implements ClosuredContextInterface, 
     {
         $this->parameters = $parameters;
 
-        if (defined('BEHAT1_SUPPORT_PATH')) {
-            if (file_exists(BEHAT1_SUPPORT_PATH.'/env.php')) {
-                $world = $this;
-                require(BEHAT1_SUPPORT_PATH.'/env.php');
-            }
+        if (defined('BEHAT1_SUPPORT_PATH') && file_exists(BEHAT1_SUPPORT_PATH.'/env.php')) {
+            $world = $this;
+            require(BEHAT1_SUPPORT_PATH.'/env.php');
         }
     }
 
