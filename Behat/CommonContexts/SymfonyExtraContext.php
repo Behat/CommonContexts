@@ -1,6 +1,6 @@
 <?php
 
-namespace Behat\Context;
+namespace Behat\CommonContexts;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Behat\Context\BehatContext;
@@ -10,7 +10,7 @@ use Behat\Behat\Context\BehatContext;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class SymfonyContext extends BehatContext
+class SymfonyExtraContext extends BehatContext
 {
     private $kernel;
 
