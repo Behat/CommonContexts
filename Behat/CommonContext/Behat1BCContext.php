@@ -7,14 +7,25 @@ use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Context\BehatContext;
 
 /**
- * In your context - add:
+ * Before requireing (or adding to autoload) this context,
+ * don't forget to set this constant:
  *
- *  define('BEHAT1_SUPPORT_PATH', __DIR__.'/../support');
+ *  define('BEHAT1_FEATURES_PATH', '');
  *
- * in order to be able to load env.php and bootstrap.php configs
+ * which must point to Behat1 `features` path.
  */
-if (defined('BEHAT1_SUPPORT_PATH') && file_exists(BEHAT1_SUPPORT_PATH.'/bootstrap.php')) {
-    require_once BEHAT1_SUPPORT_PATH.'/bootstrap.php';
+if (!defined('BEHAT1_FEATURES_PATH')) {
+    throw new \RuntimeException(
+        'Set BEHAT1_FEATURES_PATH constant before including Behat1BCContext.'.
+    );
+} elseif (!file_exists(BEHAT1_FEATURES_PATH)) {
+    throw new \RuntimeException(
+        'Provided BEHAT1_FEATURES_PATH: "'.BEHAT1_FEATURES_PATH.'" does not exists.'.
+    );
+}
+
+if (file_exists(BEHAT1_FEATURES_PATH.'/support/bootstrap.php')) {
+    require_once BEHAT1_FEATURES_PATH.'/support/bootstrap.php';
 }
 
 /**
@@ -30,29 +41,29 @@ class Behat1BCContext extends BehatContext implements ClosuredContextInterface, 
     {
         $this->parameters = $parameters;
 
-        if (defined('BEHAT1_SUPPORT_PATH') && file_exists(BEHAT1_SUPPORT_PATH.'/env.php')) {
+        if (file_exists(BEHAT1_FEATURES_PATH.'/support/env.php')) {
             $world = $this;
-            require(BEHAT1_SUPPORT_PATH.'/env.php');
+            require(BEHAT1_FEATURES_PATH.'/support/env.php');
         }
     }
 
     public function getStepDefinitionResources() {
-        if (file_exists(__DIR__ . '/../steps')) {
-            return glob(__DIR__ . '/../steps/*.php');
+        if (file_exists(BEHAT1_FEATURES_PATH.'/steps')) {
+            return glob(BEHAT1_FEATURES_PATH.'/steps/*.php');
         }
         return array();
     }
 
     public function getHookDefinitionResources() {
-        if (file_exists(__DIR__ . '/../support/hooks.php')) {
-            return array(__DIR__ . '/../support/hooks.php');
+        if (file_exists(BEHAT1_FEATURES_PATH.'/support/hooks.php')) {
+            return array(BEHAT1_FEATURES_PATH.'/support/hooks.php');
         }
         return array();
     }
 
     public function getTranslationResources() {
-        if (file_exists(__DIR__ . '/../steps/i18n')) {
-            return glob(__DIR__ . '/../steps/i18n/*.xliff');
+        if (file_exists(BEHAT1_FEATURES_PATH.'/steps/i18n')) {
+            return glob(BEHAT1_FEATURES_PATH.'/steps/i18n/*.xliff');
         }
         return array();
     }
