@@ -16,11 +16,11 @@ use Behat\Behat\Context\ClosuredContextInterface,
  */
 if (!defined('BEHAT1_FEATURES_PATH')) {
     throw new \RuntimeException(
-        'Set BEHAT1_FEATURES_PATH constant before including Behat1BCContext.'.
+        'Set BEHAT1_FEATURES_PATH constant before including Behat1BCContext.'
     );
 } elseif (!file_exists(BEHAT1_FEATURES_PATH)) {
     throw new \RuntimeException(
-        'Provided BEHAT1_FEATURES_PATH: "'.BEHAT1_FEATURES_PATH.'" does not exists.'.
+        'Provided BEHAT1_FEATURES_PATH: "'.BEHAT1_FEATURES_PATH.'" does not exists.'
     );
 }
 
