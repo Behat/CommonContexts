@@ -83,7 +83,7 @@ class SymfonyExtraContext extends BehatContext
     public function loadProfile($token = null)
     {
         if (null === $token) {
-            $headers = $this->getParentContext()->getSession()->getResponseHeaders();
+            $headers = $this->getMainContext()->getSession()->getResponseHeaders();
 
             if (!isset($headers['X-Debug-Token'])) {
                 throw new \RuntimeException('Debug-Token not found in response headers. Have you turned on the debug flag?');
