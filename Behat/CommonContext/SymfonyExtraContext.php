@@ -40,7 +40,10 @@ class SymfonyExtraContext extends BehatContext
         }
 
         $foundToAddresses = null;
+        $foundSubjects = array();
         foreach ($mailer->getMessages() as $message) {
+            $foundSubjects[] = $message->getSubject();
+
             if ($subject === $message->getSubject()) {
                 $foundToAddresses = implode(', ', array_keys($message->getTo()));
 
@@ -64,6 +67,10 @@ class SymfonyExtraContext extends BehatContext
         }
 
         if (!$foundToAddresses) {
+            if (!empty($foundSubjects)) {
+                throw new \RuntimeException(sprintf('Subject "%s" was not found, but only these subjects: "%s"', $subject, implode('", "', $foundSubjects)));
+            }
+
             // not found
             throw new \RuntimeException(sprintf('No message with subject "%s" found.', $subject));
         }
