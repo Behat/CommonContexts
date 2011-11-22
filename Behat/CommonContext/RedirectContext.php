@@ -35,7 +35,7 @@ class RedirectContext extends BehatContext
     /**
      * Follow redirect instructions.
      *
-     * @param   string  $arg_actualPath
+     * @param   string  $actualPath
      *
      * @return  void
 
@@ -46,7 +46,7 @@ class RedirectContext extends BehatContext
      *
      * @todo    Change from path based comparison to URI based comparison.
      */
-    public function iAmRedirectedTo($arg_actualPath)
+    public function iAmRedirectedTo($actualPath)
     {
         $session = $this->getSession();
         $headers = $session->getResponseHeaders();
@@ -62,7 +62,7 @@ class RedirectContext extends BehatContext
         $redirectComponents = parse_url($headers['Location']);
 
         try {
-            assertEquals($redirectComponents['path'], $arg_actualPath, 'The "Location" header points to the correct URI');
+            assertEquals($redirectComponents['path'], $actualPath, 'The "Location" header points to the correct URI');
         } catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $message = sprintf('The "Location" header points to "%s"', $redirectComponents['path']);
 
