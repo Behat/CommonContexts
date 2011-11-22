@@ -12,14 +12,6 @@ use Behat\Mink\Exception\ExpectationException,
 
 use Behat\Mink\Driver\GoutteDriver;
 
-/*
- * This file is part of the Behat.
- * (c) Konstantin Kudryashov <ever.zet@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 /**
  * Context class for managing redirects within an application.
  *
