@@ -2,16 +2,18 @@
 
 namespace Behat\CommonContext;
 
+require_once 'PHPUnit/Autoload.php';
+require_once 'PHPUnit/Framework/Assert/Functions.php';
+
 use Behat\Behat\Context\BehatContext;
 
 use Behat\Mink\Exception\ExpectationException,
     Behat\Mink\Exception\UnsupportedDriverActionException;
 
-use Behat\Mink\Driver\GoutteDriver,
-    Behat\MinkBundle\Driver\SymfonyDriver;
+use Behat\Mink\Driver\GoutteDriver;
 
 /*
- * This file is part of the Behat\Mink.
+ * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -26,7 +28,6 @@ use Behat\Mink\Driver\GoutteDriver,
  */
 class RedirectContext extends BehatContext
 {
-
     /**
      * Prevent following redirects.
      *
@@ -36,7 +37,7 @@ class RedirectContext extends BehatContext
      */
     public function iDoNotFollowRedirects()
     {
-        $this->getClient()->followRedirects(FALSE);
+        $this->getClient()->followRedirects(false);
     }
 
     /**
@@ -59,9 +60,8 @@ class RedirectContext extends BehatContext
         $headers = $session->getResponseHeaders();
 
         try {
-            assertTrue(isset($headers['Location']), 'The response contains a "Location" header');
-//          assertArrayHasKey('Location', $headers, 'The response contains a "Location" header');
-        } catch (AssertException $e) {
+            assertArrayHasKey('Location', $headers, 'The response contains a "Location" header');
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $message = 'No "Location" header was found';
 
             throw new ExpectationException($message, $session, $e);
@@ -70,8 +70,8 @@ class RedirectContext extends BehatContext
         $redirectComponents = parse_url($headers['Location']);
 
         try {
-            assertEquals($redirectComponents['path'], $arg_actualPath, 'The "Location" header point to the correct URI');
-        } catch (AssertException $e) {
+            assertEquals($redirectComponents['path'], $arg_actualPath, 'The "Location" header points to the correct URI');
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $message = sprintf('The "Location" header points to "%s"', $redirectComponents['path']);
 
             throw new ExpectationException($message, $session, $e);
@@ -79,7 +79,7 @@ class RedirectContext extends BehatContext
 
         $client = $this->getClient();
 
-        $client->followRedirects(TRUE);
+        $client->followRedirects(true);
         $client->followRedirect();
     }
 
@@ -112,5 +112,4 @@ class RedirectContext extends BehatContext
     {
         return $this->getMainContext()->getSession();
     }
-
 }
