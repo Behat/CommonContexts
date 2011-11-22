@@ -46,7 +46,7 @@ class RedirectContext extends BehatContext
      *
      * @todo    Change from path based comparison to URI based comparison.
      */
-    public function iAmRedirectedTo ($arg_actualPath)
+    public function iAmRedirectedTo($arg_actualPath)
     {
         $session = $this->getSession();
         $headers = $session->getResponseHeaders();
@@ -82,7 +82,7 @@ class RedirectContext extends BehatContext
      *
      * @throws  Behat\Mink\Exception\UnsupportedDriverActionException
      */
-    protected function getClient ()
+    protected function getClient()
     {
         $driver = $this->getSession()->getDriver();
 
@@ -100,7 +100,7 @@ class RedirectContext extends BehatContext
      *
      * @return  Behat\Mink\Session
      */
-    protected function getSession ()
+    protected function getSession()
     {
         return $this->getMainContext()->getSession();
     }
