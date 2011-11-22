@@ -86,7 +86,7 @@ class RedirectContext extends BehatContext
     {
         $driver = $this->getSession()->getDriver();
 
-        if ( ! $driver instanceof GoutteDriver) {
+        if (!$driver instanceof GoutteDriver) {
             $message = "This step is only supported by the @mink:symfony and @mink:goutte drivers";
 
             throw new UnsupportedDriverActionException($message, $driver);
