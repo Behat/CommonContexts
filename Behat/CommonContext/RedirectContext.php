@@ -33,23 +33,25 @@ class RedirectContext extends BehatContext
     /**
      * Follow redirect instructions.
      *
-     * @param   string  $actualPath
+     * @param   string  $location
      *
      * @return  void
      *
-     * @Then /^I (?:am|should be) redirected to "([^"]*)"$/
+     * @Then /^I (?:am|should be) redirected(?: to "([^"]*)")?$/
      */
-    public function iAmRedirectedTo($actualPath)
+    public function iAmRedirected($location = null)
     {
         $session = $this->getSession();
         $headers = $session->getResponseHeaders();
 
         assertArrayHasKey('Location', $headers, 'The response contains a "Location" header');
 
-        // TODO: Change from path based comparison to URI based comparison
-        $redirectComponents = parse_url($headers['Location']);
-
-        assertEquals($redirectComponents['path'], $actualPath, 'The "Location" header points to the correct URI');
+        if (null !== $location) {
+            // TODO: Change from path based comparison to URI based comparison
+            $redirectComponents = parse_url($headers['Location']);
+    
+            assertEquals($redirectComponents['path'], $location, 'The "Location" header points to the correct URI');
+        }
 
         $client = $this->getClient();
 
