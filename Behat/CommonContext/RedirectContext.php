@@ -7,10 +7,8 @@ require_once 'PHPUnit/Framework/Assert/Functions.php';
 
 use Behat\Behat\Context\BehatContext;
 
-use Behat\Mink\Exception\ExpectationException,
-    Behat\Mink\Exception\UnsupportedDriverActionException;
-
-use Behat\Mink\Driver\GoutteDriver;
+use Behat\Mink\Exception\UnsupportedDriverActionException,
+    Behat\Mink\Driver\GoutteDriver;
 
 /**
  * Context class for managing redirects within an application.
@@ -38,36 +36,20 @@ class RedirectContext extends BehatContext
      * @param   string  $actualPath
      *
      * @return  void
-
-     * @throws  Behat\Mink\Exception\ExpectationException When the "Location" header is missing.
-     * @throws  Behat\Mink\Exception\ExpectationException When the value for the "Location" is different from the value passed.
      *
      * @Then /^I (?:am|should be) redirected to "([^"]*)"$/
-     *
-     * @todo    Change from path based comparison to URI based comparison.
      */
     public function iAmRedirectedTo($actualPath)
     {
         $session = $this->getSession();
         $headers = $session->getResponseHeaders();
 
-        try {
-            assertArrayHasKey('Location', $headers, 'The response contains a "Location" header');
-        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
-            $message = 'No "Location" header was found';
+        assertArrayHasKey('Location', $headers, 'The response contains a "Location" header');
 
-            throw new ExpectationException($message, $session, $e);
-        }
-
+        // TODO: Change from path based comparison to URI based comparison
         $redirectComponents = parse_url($headers['Location']);
 
-        try {
-            assertEquals($redirectComponents['path'], $actualPath, 'The "Location" header points to the correct URI');
-        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
-            $message = sprintf('The "Location" header points to "%s"', $redirectComponents['path']);
-
-            throw new ExpectationException($message, $session, $e);
-        }
+        assertEquals($redirectComponents['path'], $actualPath, 'The "Location" header points to the correct URI');
 
         $client = $this->getClient();
 
