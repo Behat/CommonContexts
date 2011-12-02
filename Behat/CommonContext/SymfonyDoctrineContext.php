@@ -16,25 +16,25 @@ use Doctrine\ORM\Tools\SchemaTool;
 class SymfonyDoctrineContext extends BehatContext
 {
     /**
-     * @param \Behat\Behat\Event\ScenarioEvent $event
+     * @param \Behat\Behat\Event\ScenarioEvent|\Behat\Behat\Event\OutlineExampleEvent $event
      *
      * @BeforeScenario
      *
      * @return null
      */
-    public function beforeScenario(ScenarioEvent $event)
+    public function beforeScenario($event)
     {
         $this->buildSchema();
     }
 
     /**
-     * @param \Behat\Behat\Event\ScenarioEvent $event
+     * @param \Behat\Behat\Event\ScenarioEvent|\Behat\Behat\Event\OutlineExampleEvent $event
      *
      * @AfterScenario
      *
      * @return null
      */
-    public function afterScenario(ScenarioEvent $event)
+    public function afterScenario($event)
     {
         $this->getEntityManager()->clear();
     }
