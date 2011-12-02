@@ -31,6 +31,18 @@ class RedirectContext extends BehatContext
     }
 
     /**
+     * @param \Behat\Behat\Event\ScenarioEvent|\Behat\Behat\Event\OutlineExampleEvent $event
+     *
+     * @return void
+     *
+     * @AfterScenario
+     */
+    public function afterScenario($event)
+    {
+        $this->getClient()->followRedirects(true);
+    }
+
+    /**
      * Follow redirect instructions.
      *
      * @param   string  $location
@@ -49,7 +61,7 @@ class RedirectContext extends BehatContext
         if (null !== $location) {
             // TODO: Change from path based comparison to URI based comparison
             $redirectComponents = parse_url($headers['Location']);
-    
+
             assertEquals($redirectComponents['path'], $location, 'The "Location" header points to the correct URI');
         }
 
