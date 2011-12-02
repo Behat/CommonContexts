@@ -39,7 +39,9 @@ class RedirectContext extends BehatContext
      */
     public function afterScenario($event)
     {
-        $this->getClient()->followRedirects(true);
+        if ($this->getSession()->getDriver() instanceof GoutteDriver) {
+            $this->getClient()->followRedirects(true);
+        }
     }
 
     /**
