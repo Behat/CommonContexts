@@ -37,6 +37,11 @@ class SymfonyDoctrineContext extends BehatContext
     public function afterScenario($event)
     {
         $this->getEntityManager()->clear();
+
+        $clientEntityManager = $this->getClientEntityManager();
+        if ($clientEntityManager) {
+            $clientEntityManager->getConnection()->close();
+        }
     }
 
     /**
@@ -67,5 +72,19 @@ class SymfonyDoctrineContext extends BehatContext
     protected function getEntityManager()
     {
         return $this->getContainer()->get('doctrine.orm.entity_manager');
+    }
+
+    /**
+     * @return \Doctrine\ORM\EntityManager|null
+     */
+    protected function getClientEntityManager()
+    {
+        $driver = $this->getMainContext()->getSession()->getDriver();
+
+        if ($driver instanceof \Behat\MinkBundle\Driver\SymfonyDriver) {
+            return $driver->getClient()->getContainer()->get('doctrine.orm.entity_manager');
+        }
+
+        return null;
     }
 }
