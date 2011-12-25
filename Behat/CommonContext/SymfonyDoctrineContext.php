@@ -22,9 +22,15 @@ class SymfonyDoctrineContext extends BehatContext
      *
      * @return null
      */
-    public function beforeScenario($event)
+    public function buildSchema($event)
     {
-        $this->buildSchema();
+        $metadata = $this->getMetadata();
+
+        if (!empty($metadata)) {
+            $tool = new SchemaTool($this->getEntityManager());
+            $tool->dropSchema($metadata);
+            $tool->createSchema($metadata);
+        }
     }
 
     /**
@@ -34,26 +40,12 @@ class SymfonyDoctrineContext extends BehatContext
      *
      * @return null
      */
-    public function afterScenario($event)
+    public function closeDBALConnections($event)
     {
         $this->getEntityManager()->clear();
 
         foreach ($this->getClientConnections() as $connection) {
             $connection->close();
-        }
-    }
-
-    /**
-     * @return null
-     */
-    protected function buildSchema()
-    {
-        $metadata = $this->getMetadata();
-
-        if (!empty($metadata)) {
-            $tool = new SchemaTool($this->getEntityManager());
-            $tool->dropSchema($metadata);
-            $tool->createSchema($metadata);
         }
     }
 
