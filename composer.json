@@ -10,6 +10,21 @@
             "name":      "Konstantin Kudryashov",
             "email":     "ever.zet@gmail.com",
             "homepage":  "http://everzet.com"
+        },
+        {
+            "name":      "Johannes M. Schmitt",
+            "email":     "schmittjoh@gmail.com",
+            "homepage":  "https://github.com/schmittjoh"
+        },
+        {
+            "name":      "Jakub Zalas",
+            "email":     "jakub@zalas.pl",
+            "homepage":  "http://www.zalas.eu/"
+        },
+        {
+            "name":      "Geoffrey Bachelet",
+            "email":     "geoffrey.bachelet@gmail.com",
+            "homepage":  "https://github.com/ubermuda"
         }
     ],
 
