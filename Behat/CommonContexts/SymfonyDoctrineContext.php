@@ -1,6 +1,6 @@
 <?php
 
-namespace Behat\CommonContext;
+namespace Behat\CommonContexts;
 
 use Behat\BehatBundle\Context\BehatContext;
 use Behat\Behat\Event\ScenarioEvent;

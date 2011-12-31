@@ -1,6 +1,6 @@
 <?php
 
-namespace Behat\CommonContext;
+namespace Behat\CommonContexts;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Behat\Context\BehatContext;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Behat\CommonContext;
+namespace Behat\CommonContexts;
 
 use Behat\Behat\Context\BehatContext,
     Behat\Behat\Context\Step;
