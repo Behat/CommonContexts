@@ -84,7 +84,7 @@ class WebApiContext extends BehatContext
         $url    = $this->baseUrl.'/'.ltrim($this->replacePlaceHolder($url), '/');
         $fields = array();
 
-        foreach ($post->getRowsfields() as $key => $val) {
+        foreach ($post->getRowsHash() as $key => $val) {
             $fields[$key] = $this->replacePlaceHolder($val);
         }
 
@@ -114,17 +114,17 @@ class WebApiContext extends BehatContext
     {
         $url    = $this->baseUrl.'/'.ltrim($this->replacePlaceHolder($url), '/');
         $string = $this->replacePlaceHolder(trim($string));
-        $string = implode('&', explode("\n", $string));
+        $fields = parse_str(implode('&', explode("\n", $string)));
 
         switch ($method) {
             case 'POST':
-                $this->browser->post($url, array(), $string);
+                $this->browser->submit($url, $fields, Request::METHOD_POST);
                 break;
             case 'PUT':
-                $this->browser->put($url, array(), $string);
+                $this->browser->submit($url, $fields, Request::METHOD_PUT);
                 break;
             case 'DELETE':
-                $this->browser->delete($url, array(), $string);
+                $this->browser->submit($url, $fields, Request::METHOD_DELETE);
                 break;
         }
     }
@@ -205,6 +205,16 @@ class WebApiContext extends BehatContext
             $response->getStatusCode(),
             $response->getContent()
         ));
+    }
+
+    /**
+     * Returns browser instance.
+     *
+     * @return Browser
+     */
+    public function getBrowser()
+    {
+        return $this->browser;
     }
 
     /**
