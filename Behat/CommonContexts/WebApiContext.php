@@ -114,7 +114,8 @@ class WebApiContext extends BehatContext
     {
         $url    = $this->baseUrl.'/'.ltrim($this->replacePlaceHolder($url), '/');
         $string = $this->replacePlaceHolder(trim($string));
-        $fields = parse_str(implode('&', explode("\n", $string)));
+
+        parse_str(implode('&', explode("\n", $string)), $fields);
 
         switch ($method) {
             case 'POST':
