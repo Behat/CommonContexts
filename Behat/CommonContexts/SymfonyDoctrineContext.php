@@ -44,7 +44,7 @@ class SymfonyDoctrineContext extends BehatContext
     {
         $this->getEntityManager()->clear();
 
-        foreach ($this->getClientConnections() as $connection) {
+        foreach ($this->getConnections() as $connection) {
             $connection->close();
         }
     }
@@ -68,14 +68,16 @@ class SymfonyDoctrineContext extends BehatContext
     /**
      * @return array
      */
-    protected function getClientConnections()
+    protected function getConnections()
     {
-        $driver = $this->getMainContext()->getSession()->getDriver();
+        if ($this->getContainer()->has('behat.mink')) {
+            $driver = $this->getMainContext()->getSession()->getDriver();
 
-        if ($driver instanceof \Behat\MinkBundle\Driver\SymfonyDriver) {
-            return $driver->getClient()->getContainer()->get('doctrine')->getConnections();
+            if ($driver instanceof \Behat\MinkBundle\Driver\SymfonyDriver) {
+                return $driver->getClient()->getContainer()->get('doctrine')->getConnections();
+            }
         }
 
-        return array();
+        return $this->getContainer()->get('doctrine')->getConnections();
     }
 }
