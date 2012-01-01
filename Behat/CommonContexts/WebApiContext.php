@@ -2,6 +2,8 @@
 
 namespace Behat\CommonContexts;
 
+use Behat\Gherkin\Node\PyStringNode;
+use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Context\BehatContext;
 use Buzz\Message\Request;
 use Buzz\Browser;
@@ -28,7 +30,7 @@ class WebApiContext extends BehatContext
      */
     public function __construct($baseUrl, Browser $browser = null)
     {
-        $this->baseUrl = $baseUrl;
+        $this->baseUrl = rtrim($baseUrl, '/');
 
         if (null === $browser) {
             $this->browser = new Browser();
@@ -47,7 +49,7 @@ class WebApiContext extends BehatContext
      */
     public function iSendARequest($method, $url)
     {
-        $url = rtrim($this->baseUrl, '/').'/'.$this->replacePlaceHolder($url);
+        $url = $this->baseUrl.'/'.ltrim($this->replacePlaceHolder($url), '/');
 
         switch ($method) {
             case 'HEAD':
@@ -79,7 +81,7 @@ class WebApiContext extends BehatContext
      */
     public function iSendARequestWithValues($method, $url, TableNode $post)
     {
-        $url    = rtrim($this->baseUrl, '/').'/'.$this->replacePlaceHolder($url);
+        $url    = $this->baseUrl.'/'.ltrim($this->replacePlaceHolder($url), '/');
         $fields = array();
 
         foreach ($post->getRowsfields() as $key => $val) {
@@ -110,7 +112,7 @@ class WebApiContext extends BehatContext
      */
     public function iSendARequestWithBody($method, $url, PyStringNode $string)
     {
-        $url    = rtrim($this->baseUrl, '/').'/'.$this->replacePlaceHolder($url);
+        $url    = $this->baseUrl.'/'.ltrim($this->replacePlaceHolder($url), '/');
         $string = $this->replacePlaceHolder(trim($string));
         $string = implode('&', explode("\n", $string));
 
@@ -182,7 +184,7 @@ class WebApiContext extends BehatContext
         }
 
         assertCount(
-            count($etalon), count($actual), 'last query result set has expected amount of items'
+            count($etalon), $actual, 'last query result set has expected amount of items'
         );
 
         foreach ($actual as $needle) {
