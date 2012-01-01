@@ -183,14 +183,9 @@ class WebApiContext extends BehatContext
             );
         }
 
-        assertCount(
-            count($etalon), $actual, 'last query result set has expected amount of items'
-        );
-
+        assertCount(count($etalon), $actual);
         foreach ($actual as $needle) {
-            assertContains(
-                $needle, $etalon, '"'.json_encode($needle).'" row is in last query result set'
-            );
+            assertContains($needle, $etalon);
         }
     }
 
