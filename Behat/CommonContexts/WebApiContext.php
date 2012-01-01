@@ -196,10 +196,12 @@ class WebApiContext extends BehatContext
      */
     public function printResponse()
     {
+        $request  = $this->browser->getLastRequest();
         $response = $this->browser->getLastResponse();
 
-        $this->printDebug(sprintf('%s %s\n%s',
-            $response->getProtocolVersion(),
+        $this->printDebug(sprintf("%s %s => %d:\n%s",
+            $request->getMethod(),
+            $request->getUrl(),
             $response->getStatusCode(),
             $response->getContent()
         ));
