@@ -96,6 +96,9 @@ class RedirectContext extends BehatContext
     /**
      * Returns current active mink session.
      *
+     * If you are using MinkContext as a subcontext instead of using it as
+      * the main one, overwrite this method
+     *
      * @return  Behat\Mink\Session
      */
     protected function getSession()
