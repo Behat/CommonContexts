@@ -71,7 +71,7 @@ class SymfonyDoctrineContext extends BehatContext
     protected function getConnections()
     {
         if ($this->getContainer()->has('behat.mink')) {
-            $driver = $this->getMainContext()->getSession()->getDriver();
+            $driver = $this->getMinkContext()->getSession()->getDriver();
 
             if ($driver instanceof \Behat\MinkBundle\Driver\SymfonyDriver) {
                 return $driver->getClient()->getContainer()->get('doctrine')->getConnections();
@@ -79,5 +79,18 @@ class SymfonyDoctrineContext extends BehatContext
         }
 
         return $this->getContainer()->get('doctrine')->getConnections();
+    }
+
+    /**
+     * Gets the Mink context.
+     *
+     * If you are using MinkContext as a subcontext instead of using it as
+     * the main one, overwrite this method
+     *
+     * @return \Behat\Mink\Behat\Context\BaseMinkContext
+     */
+    protected function getMinkContext()
+    {
+        return $this->getMainContext();
     }
 }

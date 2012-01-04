@@ -85,12 +85,13 @@ class SymfonyExtraContext extends BehatContext
      * be used.
      *
      * @param string $token
+     * @return \Symfony\Component\HttpKernel\Profiler\Profile
      * @throws \RuntimeException
      */
     public function loadProfile($token = null)
     {
         if (null === $token) {
-            $headers = $this->getMainContext()->getSession()->getResponseHeaders();
+            $headers = $this->getMinkContext()->getSession()->getResponseHeaders();
 
             if (!isset($headers['X-Debug-Token']) && !isset($headers['x-debug-token'])) {
                 throw new \RuntimeException('Debug-Token not found in response headers. Have you turned on the debug flag?');
@@ -99,5 +100,18 @@ class SymfonyExtraContext extends BehatContext
         }
 
         return $this->kernel->getContainer()->get('profiler')->loadProfile($token);
+    }
+
+    /**
+     * Gets the Mink context.
+     *
+     * If you are using MinkContext as a subcontext instead of using it as
+     * the main one, overwrite this method
+     *
+     * @return \Behat\Mink\Behat\Context\BaseMinkContext
+     */
+    protected function getMinkContext()
+    {
+        return $this->getMainContext();
     }
 }
