@@ -4,6 +4,8 @@ namespace Behat\CommonContexts;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Behat\Context\BehatContext;
+use Behat\MinkBundle\Driver\SymfonyDriver;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 
 /**
  * Provides some steps/methods which are useful for testing a Symfony2 application.
@@ -44,7 +46,7 @@ class SymfonyExtraContext extends BehatContext
         foreach ($mailer->getMessages() as $message) {
             $foundSubjects[] = $message->getSubject();
 
-            if ($subject === $message->getSubject()) {
+            if (trim($subject) === trim($message->getSubject())) {
                 $foundToAddresses = implode(', ', array_keys($message->getTo()));
 
                 if (null !== $to) {
@@ -99,7 +101,19 @@ class SymfonyExtraContext extends BehatContext
             $token = isset($headers['X-Debug-Token']) ? $headers['X-Debug-Token'] : $headers['x-debug-token'];
         }
 
-        return $this->kernel->getContainer()->get('profiler')->loadProfile($token);
+        return $this->getClientKernel()->getContainer()->get('profiler')->loadProfile($token);
+    }
+
+    protected function getClientKernel()
+    {
+        $driver = $this->getMinkContext()->getSession()->getDriver();
+
+        if (!$driver instanceof SymfonyDriver) {
+            $message = 'This step is only supported by the @mink:symfony driver';
+            throw new UnsupportedDriverActionException($message, $driver);
+        }
+
+        return $driver->getClient()->getKernel();
     }
 
     /**
