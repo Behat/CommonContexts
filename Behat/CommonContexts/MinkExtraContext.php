@@ -13,7 +13,7 @@ use Behat\Behat\Context\BehatContext,
  *
  * @author Geoffrey Bachelet <geoffrey.bachelet@gmail.com>
  */
-class WebExtraContext extends BehatContext
+class MinkExtraContext extends BehatContext
 {
     /**
      * Checks that a page exists

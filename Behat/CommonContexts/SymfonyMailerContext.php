@@ -10,7 +10,7 @@ use Behat\Behat\Context\BehatContext;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class SymfonyExtraContext extends BehatContext
+class SymfonyMailerContext extends BehatContext
 {
     private $kernel;
 

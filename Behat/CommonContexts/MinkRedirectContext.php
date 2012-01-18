@@ -16,7 +16,7 @@ use Behat\Mink\Exception\UnsupportedDriverActionException,
  * @author  Johannes M. Schmitt <schmittjoh@gmail.com>
  * @author  Marijn Huizendveld <marijn.huizendveld@gmail.com>
  */
-class RedirectContext extends BehatContext
+class MinkRedirectContext extends BehatContext
 {
     /**
      * Prevent following redirects.
