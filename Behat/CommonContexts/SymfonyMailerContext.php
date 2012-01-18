@@ -44,7 +44,7 @@ class SymfonyMailerContext extends BehatContext
         foreach ($mailer->getMessages() as $message) {
             $foundSubjects[] = $message->getSubject();
 
-            if ($subject === $message->getSubject()) {
+            if (trim($subject) === trim($message->getSubject())) {
                 $foundToAddresses = implode(', ', array_keys($message->getTo()));
 
                 if (null !== $to) {
