@@ -102,7 +102,7 @@ class WebApiContext extends BehatContext
     }
 
     /**
-     * Sends HTTP request to specific URL with body from PyString.
+     * Sends HTTP request to specific URL with raw body from PyString.
      *
      * @param string       $method request method
      * @param string       $url    relative url
@@ -111,6 +111,33 @@ class WebApiContext extends BehatContext
      * @When /^(?:I )?send a (POST|PUT|DELETE) request to "([^"]+)" with body:$/
      */
     public function iSendARequestWithBody($method, $url, PyStringNode $string)
+    {
+        $url    = $this->baseUrl.'/'.ltrim($this->replacePlaceHolder($url), '/');
+        $string = $this->replacePlaceHolder(trim($string));
+
+        switch ($method) {
+            case 'POST':
+                $this->browser->call($url, Request::METHOD_POST, array(), $string);
+                break;
+            case 'PUT':
+                $this->browser->call($url, Request::METHOD_PUT, array(), $string);
+                break;
+            case 'DELETE':
+                $this->browser->call($url, Request::METHOD_DELETE, array(), $string);
+                break;
+        }
+    }
+
+    /**
+     * Sends HTTP request to specific URL with form data from PyString.
+     *
+     * @param string       $method request method
+     * @param string       $url    relative url
+     * @param PyStringNode $string request body
+     *
+     * @When /^(?:I )?send a (POST|PUT|DELETE) request to "([^"]+)" with form data:$/
+     */
+    public function iSendARequestWithFormData($method, $url, PyStringNode $string)
     {
         $url    = $this->baseUrl.'/'.ltrim($this->replacePlaceHolder($url), '/');
         $string = $this->replacePlaceHolder(trim($string));
