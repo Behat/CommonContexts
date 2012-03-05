@@ -43,13 +43,14 @@ class WebApiContext extends BehatContext
     /**
      * Adds Basic Authentication header to next request.
      *
-     * @param string $data username:password
+     * @param string $username
+     * @param string $password
      *
-     * @Given /^I am authenticating as "([^"]*)"$/
+     * @Given /^I am authenticating as "([^"]*)" with "([^"]*)" password$/
      */
-    public function iAmAuthenticatingAs($data)
+    public function iAmAuthenticatingAs($username, $password)
     {
-        $this->authorization = $data;
+        $this->authorization = base64_encode($username.':'.$password);
     }
 
     /**
@@ -298,7 +299,7 @@ class WebApiContext extends BehatContext
         $headers = array();
 
         if (null !== $this->authorization) {
-            $headers['Authorization'] = $this->authorization;
+            $headers[] = 'Authorization: Base '.$this->authorization;
         }
 
         return $headers;
