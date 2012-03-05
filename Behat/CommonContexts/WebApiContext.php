@@ -20,6 +20,7 @@ class WebApiContext extends BehatContext
 {
     private $browser;
     private $baseUrl;
+    private $authorization;
     private $placeHolders = array();
 
     /**
@@ -40,6 +41,18 @@ class WebApiContext extends BehatContext
     }
 
     /**
+     * Adds Basic Authentication header to next request.
+     *
+     * @param string $data username:password
+     *
+     * @Given /^I am authenticating as "([^"]*)"$/
+     */
+    public function iAmAuthenticatingAs($data)
+    {
+        $this->authorization = $data;
+    }
+
+    /**
      * Sends HTTP request to specific relative URL.
      *
      * @param string $method request method
@@ -53,19 +66,19 @@ class WebApiContext extends BehatContext
 
         switch ($method) {
             case 'HEAD':
-                $this->browser->head($url);
+                $this->browser->head($url, $this->getHeaders());
                 break;
             case 'GET':
-                $this->browser->get($url);
+                $this->browser->get($url, $this->getHeaders());
                 break;
             case 'POST':
-                $this->browser->post($url);
+                $this->browser->post($url, $this->getHeaders());
                 break;
             case 'PUT':
-                $this->browser->put($url);
+                $this->browser->put($url, $this->getHeaders());
                 break;
             case 'DELETE':
-                $this->browser->delete($url);
+                $this->browser->delete($url, $this->getHeaders());
                 break;
         }
     }
@@ -90,13 +103,13 @@ class WebApiContext extends BehatContext
 
         switch ($method) {
             case 'POST':
-                $this->browser->submit($url, $fields, Request::METHOD_POST);
+                $this->browser->submit($url, $fields, Request::METHOD_POST, $this->getHeaders());
                 break;
             case 'PUT':
-                $this->browser->submit($url, $fields, Request::METHOD_PUT);
+                $this->browser->submit($url, $fields, Request::METHOD_PUT, $this->getHeaders());
                 break;
             case 'DELETE':
-                $this->browser->submit($url, $fields, Request::METHOD_DELETE);
+                $this->browser->submit($url, $fields, Request::METHOD_DELETE, $this->getHeaders());
                 break;
         }
     }
@@ -117,13 +130,13 @@ class WebApiContext extends BehatContext
 
         switch ($method) {
             case 'POST':
-                $this->browser->call($url, Request::METHOD_POST, array(), $string);
+                $this->browser->call($url, Request::METHOD_POST, $this->getHeaders(), $string);
                 break;
             case 'PUT':
-                $this->browser->call($url, Request::METHOD_PUT, array(), $string);
+                $this->browser->call($url, Request::METHOD_PUT, $this->getHeaders(), $string);
                 break;
             case 'DELETE':
-                $this->browser->call($url, Request::METHOD_DELETE, array(), $string);
+                $this->browser->call($url, Request::METHOD_DELETE, $this->getHeaders(), $string);
                 break;
         }
     }
@@ -146,13 +159,13 @@ class WebApiContext extends BehatContext
 
         switch ($method) {
             case 'POST':
-                $this->browser->submit($url, $fields, Request::METHOD_POST);
+                $this->browser->submit($url, $fields, Request::METHOD_POST, $this->getHeaders());
                 break;
             case 'PUT':
-                $this->browser->submit($url, $fields, Request::METHOD_PUT);
+                $this->browser->submit($url, $fields, Request::METHOD_PUT, $this->getHeaders());
                 break;
             case 'DELETE':
-                $this->browser->submit($url, $fields, Request::METHOD_DELETE);
+                $this->browser->submit($url, $fields, Request::METHOD_DELETE, $this->getHeaders());
                 break;
         }
     }
@@ -273,5 +286,21 @@ class WebApiContext extends BehatContext
         }
 
         return $string;
+    }
+
+    /**
+     * Returns headers, that will be used to send requests.
+     *
+     * @return array
+     */
+    protected function getHeaders()
+    {
+        $headers = array();
+
+        if (null !== $this->authorization) {
+            $headers['Authorization'] = $this->authorization;
+        }
+
+        return $headers;
     }
 }
