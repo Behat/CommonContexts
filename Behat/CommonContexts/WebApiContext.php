@@ -299,7 +299,7 @@ class WebApiContext extends BehatContext
         $headers = array();
 
         if (null !== $this->authorization) {
-            $headers[] = 'Authorization: Base '.$this->authorization;
+            $headers[] = 'Authorization: Basic '.$this->authorization;
         }
 
         return $headers;
