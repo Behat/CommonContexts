@@ -59,29 +59,13 @@ class WebApiContext extends BehatContext
      * @param string $method request method
      * @param string $url    relative url
      *
-     * @When /^(?:I )?send a (HEAD|GET|POST|PUT|DELETE) request to "([^"]+)"$/
+     * @When /^(?:I )?send a ([A-Z]+) request to "([^"]+)"$/
      */
     public function iSendARequest($method, $url)
     {
         $url = $this->baseUrl.'/'.ltrim($this->replacePlaceHolder($url), '/');
 
-        switch ($method) {
-            case 'HEAD':
-                $this->browser->head($url, $this->getHeaders());
-                break;
-            case 'GET':
-                $this->browser->get($url, $this->getHeaders());
-                break;
-            case 'POST':
-                $this->browser->post($url, $this->getHeaders());
-                break;
-            case 'PUT':
-                $this->browser->put($url, $this->getHeaders());
-                break;
-            case 'DELETE':
-                $this->browser->delete($url, $this->getHeaders());
-                break;
-        }
+        $this->browser->call($url, $method, $this->getHeaders());
     }
 
     /**
@@ -91,7 +75,7 @@ class WebApiContext extends BehatContext
      * @param string    $url    relative url
      * @param TableNode $post   table of post values
      *
-     * @When /^(?:I )?send a (POST|PUT|DELETE) request to "([^"]+)" with values:$/
+     * @When /^(?:I )?send a ([A-Z]+) request to "([^"]+)" with values:$/
      */
     public function iSendARequestWithValues($method, $url, TableNode $post)
     {
@@ -102,17 +86,7 @@ class WebApiContext extends BehatContext
             $fields[$key] = $this->replacePlaceHolder($val);
         }
 
-        switch ($method) {
-            case 'POST':
-                $this->browser->submit($url, $fields, Request::METHOD_POST, $this->getHeaders());
-                break;
-            case 'PUT':
-                $this->browser->submit($url, $fields, Request::METHOD_PUT, $this->getHeaders());
-                break;
-            case 'DELETE':
-                $this->browser->submit($url, $fields, Request::METHOD_DELETE, $this->getHeaders());
-                break;
-        }
+        $this->browser->submit($url, $fields, $method, $this->getHeaders());
     }
 
     /**
@@ -122,24 +96,14 @@ class WebApiContext extends BehatContext
      * @param string       $url    relative url
      * @param PyStringNode $string request body
      *
-     * @When /^(?:I )?send a (POST|PUT|DELETE) request to "([^"]+)" with body:$/
+     * @When /^(?:I )?send a ([A-Z]+) request to "([^"]+)" with body:$/
      */
     public function iSendARequestWithBody($method, $url, PyStringNode $string)
     {
         $url    = $this->baseUrl.'/'.ltrim($this->replacePlaceHolder($url), '/');
         $string = $this->replacePlaceHolder(trim($string));
 
-        switch ($method) {
-            case 'POST':
-                $this->browser->call($url, Request::METHOD_POST, $this->getHeaders(), $string);
-                break;
-            case 'PUT':
-                $this->browser->call($url, Request::METHOD_PUT, $this->getHeaders(), $string);
-                break;
-            case 'DELETE':
-                $this->browser->call($url, Request::METHOD_DELETE, $this->getHeaders(), $string);
-                break;
-        }
+        $this->browser->call($url, $method, $this->getHeaders(), $string);
     }
 
     /**
@@ -149,7 +113,7 @@ class WebApiContext extends BehatContext
      * @param string       $url    relative url
      * @param PyStringNode $string request body
      *
-     * @When /^(?:I )?send a (POST|PUT|DELETE) request to "([^"]+)" with form data:$/
+     * @When /^(?:I )?send a ([A-Z]+) request to "([^"]+)" with form data:$/
      */
     public function iSendARequestWithFormData($method, $url, PyStringNode $string)
     {
@@ -158,17 +122,7 @@ class WebApiContext extends BehatContext
 
         parse_str(implode('&', explode("\n", $string)), $fields);
 
-        switch ($method) {
-            case 'POST':
-                $this->browser->submit($url, $fields, Request::METHOD_POST, $this->getHeaders());
-                break;
-            case 'PUT':
-                $this->browser->submit($url, $fields, Request::METHOD_PUT, $this->getHeaders());
-                break;
-            case 'DELETE':
-                $this->browser->submit($url, $fields, Request::METHOD_DELETE, $this->getHeaders());
-                break;
-        }
+        $this->browser->submit($url, $fields, $method, $this->getHeaders());
     }
 
     /**
