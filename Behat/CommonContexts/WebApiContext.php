@@ -22,6 +22,7 @@ class WebApiContext extends BehatContext
     private $baseUrl;
     private $authorization;
     private $placeHolders = array();
+    private $headers = array();
 
     /**
      * Initializes context.
@@ -51,6 +52,7 @@ class WebApiContext extends BehatContext
     public function iAmAuthenticatingAs($username, $password)
     {
         $this->authorization = base64_encode($username.':'.$password);
+        $this->addHeader('Authorization: Basic '.$this->authorization);
     }
 
     /**
@@ -250,12 +252,16 @@ class WebApiContext extends BehatContext
      */
     protected function getHeaders()
     {
-        $headers = array();
+        return $this->headers;
+    }
 
-        if (null !== $this->authorization) {
-            $headers[] = 'Authorization: Basic '.$this->authorization;
-        }
-
-        return $headers;
+    /**
+     * Adds header
+     *
+     * @param string $header
+     */
+    protected function addHeader($header)
+    {
+        $this->headers[] = $header;
     }
 }
