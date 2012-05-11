@@ -56,6 +56,19 @@ class WebApiContext extends BehatContext
     }
 
     /**
+     * Sets a HTTP Header.
+     *
+     * @param string $name  header name
+     * @param string $value header value
+     *
+     * @Given /^I set header "([^"]*)" with value "([^"]*)"$/
+     */
+    public function iSetHeaderWithValue($name, $value)
+    {
+        $this->addHeader($name.': '.$value);
+    }
+
+    /**
      * Sends HTTP request to specific relative URL.
      *
      * @param string $method request method
