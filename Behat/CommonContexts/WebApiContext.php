@@ -18,11 +18,11 @@ require_once 'PHPUnit/Framework/Assert/Functions.php';
  */
 class WebApiContext extends BehatContext
 {
-    private $browser;
-    private $baseUrl;
-    private $authorization;
-    private $placeHolders = array();
-    private $headers = array();
+    protected $browser;
+    protected $baseUrl;
+    protected $authorization;
+    protected $placeHolders = array();
+    protected $headers = array();
 
     /**
      * Initializes context.
