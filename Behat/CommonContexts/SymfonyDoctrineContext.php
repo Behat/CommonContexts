@@ -2,7 +2,10 @@
 
 namespace Behat\CommonContexts;
 
-use Behat\BehatBundle\Context\BehatContext;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Behat\Symfony2Extension\Context\KernelAwareInterface;
+
+use Behat\Behat\Context\BehatContext;
 use Behat\Behat\Event\ScenarioEvent;
 use Doctrine\ORM\Tools\SchemaTool;
 
@@ -13,8 +16,32 @@ use Doctrine\ORM\Tools\SchemaTool;
  *
  * @author Jakub Zalas <jakub@zalas.pl>
  */
-class SymfonyDoctrineContext extends BehatContext
+class SymfonyDoctrineContext extends BehatContext implements KernelAwareInterface
 {
+    private $kernel;
+    private $parameters;
+
+    /**
+     * Initializes context with parameters from behat.yml.
+     *
+     * @param array $parameters
+     */
+    public function __construct(array $parameters)
+    {
+        $this->parameters = $parameters;
+    }
+
+    /**
+     * Sets HttpKernel instance.
+     * This method will be automatically called by Symfony2Extension ContextInitializer.
+     *
+     * @param KernelInterface $kernel
+     */
+    public function setKernel(KernelInterface $kernel)
+    {
+        $this->kernel = $kernel;
+    }
+
     /**
      * @param \Behat\Behat\Event\ScenarioEvent|\Behat\Behat\Event\OutlineExampleEvent $event
      *
@@ -62,7 +89,7 @@ class SymfonyDoctrineContext extends BehatContext
      */
     protected function getEntityManager()
     {
-        return $this->getContainer()->get('doctrine.orm.entity_manager');
+        return $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
     }
 
     /**
@@ -70,15 +97,16 @@ class SymfonyDoctrineContext extends BehatContext
      */
     protected function getConnections()
     {
-        if ($this->getContainer()->has('behat.mink')) {
+        /* @mytodo is this code needed?
+        if ($this->kernel->getContainer()->has('behat.mink')) {
             $driver = $this->getMinkContext()->getSession()->getDriver();
 
-            if ($driver instanceof \Behat\MinkBundle\Driver\SymfonyDriver) {
+            if ($driver instanceof \Behat\Mink\Driver\BrowserKitDriver) {
                 return $driver->getClient()->getContainer()->get('doctrine')->getConnections();
             }
-        }
+        }*/
 
-        return $this->getContainer()->get('doctrine')->getConnections();
+        return $this->kernel->getContainer()->get('doctrine')->getConnections();
     }
 
     /**
