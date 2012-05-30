@@ -19,17 +19,6 @@ use Doctrine\ORM\Tools\SchemaTool;
 class SymfonyDoctrineContext extends BehatContext implements KernelAwareInterface
 {
     private $kernel;
-    private $parameters;
-
-    /**
-     * Initializes context with parameters from behat.yml.
-     *
-     * @param array $parameters
-     */
-    public function __construct(array $parameters)
-    {
-        $this->parameters = $parameters;
-    }
 
     /**
      * Sets HttpKernel instance.
@@ -97,15 +86,6 @@ class SymfonyDoctrineContext extends BehatContext implements KernelAwareInterfac
      */
     protected function getConnections()
     {
-        /* @mytodo is this code needed?
-        if ($this->kernel->getContainer()->has('behat.mink')) {
-            $driver = $this->getMinkContext()->getSession()->getDriver();
-
-            if ($driver instanceof \Behat\Mink\Driver\BrowserKitDriver) {
-                return $driver->getClient()->getContainer()->get('doctrine')->getConnections();
-            }
-        }*/
-
         return $this->kernel->getContainer()->get('doctrine')->getConnections();
     }
 
