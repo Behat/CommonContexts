@@ -2,6 +2,9 @@
 
 namespace Behat\CommonContexts;
 
+use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
+
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Context\BehatContext;
@@ -16,8 +19,11 @@ require_once 'PHPUnit/Framework/Assert/Functions.php';
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class WebApiContext extends BehatContext
+class WebApiContext extends BehatContext implements KernelAwareInterface
 {
+    private $kernel;
+    private $parameters;
+
     private $browser;
     private $baseUrl;
     private $authorization;
@@ -25,13 +31,17 @@ class WebApiContext extends BehatContext
     private $headers = array();
 
     /**
-     * Initializes context.
+     * Initializes context with parameters from behat.yml.
      *
-     * @param string  $baseUrl base API url
-     * @param Browser $browser browser instance (optional)
+     * @param array $parameters
      */
-    public function __construct($baseUrl, Browser $browser = null)
+    public function __construct(array $parameters)
     {
+        $this->parameters = $parameters;
+
+        $baseUrl = $this->parameters['base_url'];
+        $browser = $this->parameters['browser'];
+
         $this->baseUrl = rtrim($baseUrl, '/');
 
         if (null === $browser) {
@@ -39,6 +49,17 @@ class WebApiContext extends BehatContext
         } else {
             $this->browser = $browser;
         }
+    }
+
+    /**
+     * Sets HttpKernel instance.
+     * This method will be automatically called by Symfony2Extension ContextInitializer.
+     *
+     * @param KernelInterface $kernel
+     */
+    public function setKernel(KernelInterface $kernel)
+    {
+        $this->kernel = $kernel;
     }
 
     /**
