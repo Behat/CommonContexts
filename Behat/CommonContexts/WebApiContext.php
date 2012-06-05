@@ -195,8 +195,9 @@ class WebApiContext extends BehatContext
         }
 
         assertCount(count($etalon), $actual);
-        foreach ($actual as $needle) {
-            assertContains($needle, $etalon);
+        foreach ($actual as $key => $needle) {
+            assertArrayHasKey($key, $etalon);
+            assertEquals($etalon[$key], $actual[$key]);
         }
     }
 
