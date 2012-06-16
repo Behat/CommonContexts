@@ -2,9 +2,11 @@
 
 namespace Behat\CommonContexts;
 
-use Behat\BehatBundle\Context\BehatContext;
+use Behat\Behat\Context\BehatContext;
 use Behat\Behat\Event\ScenarioEvent;
+use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Provides hooks for building and cleaning up a database schema with Doctrine.
@@ -13,8 +15,13 @@ use Doctrine\ORM\Tools\SchemaTool;
  *
  * @author Jakub Zalas <jakub@zalas.pl>
  */
-class SymfonyDoctrineContext extends BehatContext
+class SymfonyDoctrineContext extends BehatContext implements KernelAwareInterface
 {
+    /**
+     * @var \Symfony\Component\HttpKernel\KernelInterface $kernel
+     */
+    private $kernel = null;
+
     /**
      * @param \Behat\Behat\Event\ScenarioEvent|\Behat\Behat\Event\OutlineExampleEvent $event
      *
@@ -50,6 +57,16 @@ class SymfonyDoctrineContext extends BehatContext
     }
 
     /**
+     * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
+     *
+     * @return null
+     */
+    public function setKernel(KernelInterface $kernel)
+    {
+        $this->kernel = $kernel;
+    }
+
+    /**
      * @return array
      */
     protected function getMetadata()
@@ -62,7 +79,7 @@ class SymfonyDoctrineContext extends BehatContext
      */
     protected function getEntityManager()
     {
-        return $this->getContainer()->get('doctrine.orm.entity_manager');
+        return $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
     }
 
     /**
@@ -70,27 +87,6 @@ class SymfonyDoctrineContext extends BehatContext
      */
     protected function getConnections()
     {
-        if ($this->getContainer()->has('behat.mink')) {
-            $driver = $this->getMinkContext()->getSession()->getDriver();
-
-            if ($driver instanceof \Behat\MinkBundle\Driver\SymfonyDriver) {
-                return $driver->getClient()->getContainer()->get('doctrine')->getConnections();
-            }
-        }
-
-        return $this->getContainer()->get('doctrine')->getConnections();
-    }
-
-    /**
-     * Gets the Mink context.
-     *
-     * If you are using MinkContext as a subcontext instead of using it as
-     * the main one, overwrite this method
-     *
-     * @return \Behat\Mink\Behat\Context\BaseMinkContext
-     */
-    protected function getMinkContext()
-    {
-        return $this->getMainContext();
+        return $this->kernel->getContainer()->get('doctrine')->getConnections();
     }
 }
