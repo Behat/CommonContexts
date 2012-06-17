@@ -5,10 +5,10 @@ namespace Behat\CommonContexts;
 require_once 'PHPUnit/Autoload.php';
 require_once 'PHPUnit/Framework/Assert/Functions.php';
 
-use Behat\Behat\Context\BehatContext;
+use Behat\MinkExtension\Context\RawMinkContext;
 
 use Behat\Mink\Exception\UnsupportedDriverActionException,
-    Behat\Mink\Driver\GoutteDriver;
+    Behat\Mink\Driver\BrowserKitDriver;
 
 /**
  * Context class for managing redirects within an application.
@@ -16,7 +16,7 @@ use Behat\Mink\Exception\UnsupportedDriverActionException,
  * @author  Johannes M. Schmitt <schmittjoh@gmail.com>
  * @author  Marijn Huizendveld <marijn.huizendveld@gmail.com>
  */
-class MinkRedirectContext extends BehatContext
+class MinkRedirectContext extends RawMinkContext
 {
     /**
      * Prevent following redirects.
@@ -39,7 +39,7 @@ class MinkRedirectContext extends BehatContext
      */
     public function afterScenario($event)
     {
-        if ($this->getSession()->getDriver() instanceof GoutteDriver) {
+        if ($this->getSession()->getDriver() instanceof BrowserKitDriver) {
             $this->getClient()->followRedirects(true);
         }
     }
@@ -55,8 +55,7 @@ class MinkRedirectContext extends BehatContext
      */
     public function iAmRedirected($location = null)
     {
-        $session = $this->getSession();
-        $headers = $session->getResponseHeaders();
+        $headers = $this->getSession()->getResponseHeaders();
 
         assertArrayHasKey('Location', $headers, 'The response contains a "Location" header');
 
@@ -84,25 +83,12 @@ class MinkRedirectContext extends BehatContext
     {
         $driver = $this->getSession()->getDriver();
 
-        if (!$driver instanceof GoutteDriver) {
-            $message = "This step is only supported by the @mink:symfony and @mink:goutte drivers";
+        if (!$driver instanceof BrowserKitDriver) {
+            $message = 'This step is only supported by the browserkit drivers';
 
             throw new UnsupportedDriverActionException($message, $driver);
         }
 
         return $driver->getClient();
-    }
-
-    /**
-     * Returns current active mink session.
-     *
-     * If you are using MinkContext as a subcontext instead of using it as
-      * the main one, overwrite this method
-     *
-     * @return  Behat\Mink\Session
-     */
-    protected function getSession()
-    {
-        return $this->getMainContext()->getSession();
     }
 }
