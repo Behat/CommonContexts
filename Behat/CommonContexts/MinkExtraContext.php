@@ -26,7 +26,7 @@ class MinkExtraContext extends BehatContext
     {
         return array(
             new Step\When('I go to "'.$page.'"'),
-            new Step\Then('The response status code should not be 404'),
+            new Step\Then('the response status code should not be 404'),
         );
     }
 
@@ -41,7 +41,7 @@ class MinkExtraContext extends BehatContext
     {
         return array(
             new Step\When('I go to "'.$page.'"'),
-            new Step\Then('The response status code should be 404'),
+            new Step\Then('the response status code should be 404'),
         );
     }
 
@@ -56,7 +56,7 @@ class MinkExtraContext extends BehatContext
     {
         return array(
             new Step\When('I go to "'.$page.'"'),
-            new Step\Then('The response status code should be 403'),
+            new Step\Then('the response status code should be 403'),
         );
     }
 
@@ -71,7 +71,7 @@ class MinkExtraContext extends BehatContext
     {
         return array(
             new Step\When('I go to "'.$page.'"'),
-            new Step\Then('The response status code should be 200'),
+            new Step\Then('the response status code should be 200'),
         );
     }
 }
