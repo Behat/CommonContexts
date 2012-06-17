@@ -2,19 +2,29 @@
 
 namespace Behat\CommonContexts;
 
-use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Behat\Context\BehatContext;
+use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Behat\MinkExtension\Context\RawMinkContext;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Provides some steps/methods which are useful for testing a Symfony2 application.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class SymfonyMailerContext extends BehatContext
+class SymfonyMailerContext extends RawMinkContext implements KernelAwareInterface
 {
-    private $kernel;
+    /**
+     * @var \Symfony\Component\HttpKernel\KernelInterface $kernel
+     */
+    private $kernel = null;
 
-    public function __construct(KernelInterface $kernel)
+    /**
+     * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
+     *
+     * @return null
+     */
+    public function setKernel(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
     }
@@ -91,7 +101,7 @@ class SymfonyMailerContext extends BehatContext
     public function loadProfile($token = null)
     {
         if (null === $token) {
-            $headers = $this->getMinkContext()->getSession()->getResponseHeaders();
+            $headers = $this->getSession()->getResponseHeaders();
 
             if (!isset($headers['X-Debug-Token']) && !isset($headers['x-debug-token'])) {
                 throw new \RuntimeException('Debug-Token not found in response headers. Have you turned on the debug flag?');
@@ -100,18 +110,5 @@ class SymfonyMailerContext extends BehatContext
         }
 
         return $this->kernel->getContainer()->get('profiler')->loadProfile($token);
-    }
-
-    /**
-     * Gets the Mink context.
-     *
-     * If you are using MinkContext as a subcontext instead of using it as
-     * the main one, overwrite this method
-     *
-     * @return \Behat\Mink\Behat\Context\BaseMinkContext
-     */
-    protected function getMinkContext()
-    {
-        return $this->getMainContext();
     }
 }

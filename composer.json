@@ -34,10 +34,10 @@
     },
 
     "suggest": {
-        "behat/behat-bundle":        "*",
-        "behat/mink-bundle":         "*",
-        "doctrine/doctrine-bundle":  "*",
-        "kriswallsmith/buzz":        ">=0.5.0"
+        "behat/symfony2-extension":     "*",
+        "behat/mink-extension":         "*",
+        "doctrine/doctrine-bundle":     "*",
+        "kriswallsmith/buzz":           ">=0.5.0"
     },
 
     "autoload": {
