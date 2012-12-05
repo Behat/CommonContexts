@@ -47,20 +47,20 @@ class MinkRedirectContext extends RawMinkContext
     /**
      * Follow redirect instructions.
      *
-     * @param   string  $location
+     * @param   string  $page
      *
      * @return  void
      *
      * @Then /^I (?:am|should be) redirected(?: to "([^"]*)")?$/
      */
-    public function iAmRedirected($location = null)
+    public function iAmRedirected($page = null)
     {
         $headers = $this->getSession()->getResponseHeaders();
 
         assertArrayHasKey('Location', $headers, 'The response contains a "Location" header');
 
-        if (null !== $location) {
-            assertEquals($headers['Location'][0], $this->locatePath($location), 'The "Location" header points to the correct URI');
+        if (null !== $page) {
+            assertEquals($headers['Location'][0], $this->locatePath($page), 'The "Location" header points to the correct URI');
         }
 
         $client = $this->getClient();
