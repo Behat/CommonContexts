@@ -60,10 +60,7 @@ class MinkRedirectContext extends RawMinkContext
         assertArrayHasKey('Location', $headers, 'The response contains a "Location" header');
 
         if (null !== $location) {
-            // TODO: Change from path based comparison to URI based comparison
-            $redirectComponents = parse_url($headers['Location']);
-
-            assertEquals($redirectComponents['path'], $location, 'The "Location" header points to the correct URI');
+            assertEquals($headers['Location'][0], $this->locatePath($location), 'The "Location" header points to the correct URI');
         }
 
         $client = $this->getClient();
