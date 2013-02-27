@@ -36,7 +36,7 @@ class DoctrineFixturesContext extends BehatContext
      * Load a data fixture class
      *
      * @param \Doctrine\Common\DataFixtures\Loader $loader     Data fixtures loader
-     * @param string                               $classNames Array of class names of fixtures
+     * @param array                                $classNames Array of class names of fixtures
      */
     public function loadFixtureClasses($loader, array $classNames)
     {
