@@ -107,6 +107,9 @@ class SymfonyMailerContext extends RawMinkContext implements KernelAwareInterfac
                 throw new \RuntimeException('Debug-Token not found in response headers. Have you turned on the debug flag?');
             }
             $token = isset($headers['X-Debug-Token']) ? $headers['X-Debug-Token'] : $headers['x-debug-token'];
+            if (is_array($token)) {
+                $token = end($token);
+            }
         }
 
         return $this->kernel->getContainer()->get('profiler')->loadProfile($token);
