@@ -6,6 +6,8 @@ use Behat\Behat\Context\BehatContext;
 use Behat\Behat\Event\ScenarioEvent;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\ORM\EntityManager;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -31,12 +33,14 @@ class SymfonyDoctrineContext extends BehatContext implements KernelAwareInterfac
      */
     public function buildSchema($event)
     {
-        $metadata = $this->getMetadata();
+        foreach ($this->getEntityManagers() as $entityManager) {
+            $metadata = $this->getMetadata($entityManager);
 
-        if (!empty($metadata)) {
-            $tool = new SchemaTool($this->getEntityManager());
-            $tool->dropSchema($metadata);
-            $tool->createSchema($metadata);
+            if (!empty($metadata)) {
+                $tool = new SchemaTool($entityManager);
+                $tool->dropSchema($metadata);
+                $tool->createSchema($metadata);
+            }
         }
     }
 
@@ -49,8 +53,12 @@ class SymfonyDoctrineContext extends BehatContext implements KernelAwareInterfac
      */
     public function closeDBALConnections($event)
     {
-        $this->getEntityManager()->clear();
+        /** @var EntityManager $entityManager */
+        foreach ($this->getEntityManagers() as $entityManager) {
+            $entityManager->clear();
+        }
 
+        /** @var Connection $connection */
         foreach ($this->getConnections() as $connection) {
             $connection->close();
         }
@@ -67,19 +75,21 @@ class SymfonyDoctrineContext extends BehatContext implements KernelAwareInterfac
     }
 
     /**
+     * @param EntityManager $entityManager
+     *
      * @return array
      */
-    protected function getMetadata()
+    protected function getMetadata(EntityManager $entityManager)
     {
-        return $this->getEntityManager()->getMetadataFactory()->getAllMetadata();
+        return $entityManager->getMetadataFactory()->getAllMetadata();
     }
 
     /**
-     * @return \Doctrine\ORM\EntityManager
+     * @return array
      */
-    protected function getEntityManager()
+    protected function getEntityManagers()
     {
-        return $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
+        return $this->kernel->getContainer()->get('doctrine')->getManagers();
     }
 
     /**
