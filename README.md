@@ -18,6 +18,7 @@ namespace Acme\DemoBundle\Features\Context;
 
 use Behat\Behat\Context\BehatContext;
 use Behat\CommonContexts\SymfonyMailerContext;
+use Behat\CommonContexts\DoctrineFixturesContext;
 
 /**
  * Feature context.
@@ -62,4 +63,47 @@ class FeatureContext extends BehatContext
 }
 
 ```
+
+
+### Example: Using SymfonyDoctrineContext to reset Doctrine 
+database schema in Symfony framework before scenario starts
+
+``` php
+<?php
+
+namespace Acme\DemoBundle\Features\Context;
+
+use Behat\Behat\Context\BehatContext;
+use Behat\CommonContexts\SymfonyDoctrineContext;
+
+/**
+ * Feature context.
+ */
+class FeatureContext extends BehatContext
+{
+    public function __construct()
+    {
+        // Connects SymfonyDoctrineContext
+        $this->useContext('symfony_doctrine_context',  new SymfonyDoctrineContext);
+    }
+
+    /**
+     * Clean database before scenario starts
+     *
+     * @BeforeScenario
+     */
+    public function beforeScenario($event)
+    {
+        // Asks subcontext SymfonyDoctrineContext to rebuild database schema
+        $this
+            ->getMainContext()
+            ->getSubcontext('symfony_doctrine_context')
+            ->buildSchema($event);
+    }
+}
+
+```
+
+
+
 
