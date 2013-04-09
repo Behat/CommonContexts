@@ -51,6 +51,7 @@ class WebApiContext extends BehatContext
      */
     public function iAmAuthenticatingAs($username, $password)
     {
+        $this->removeHeader('Authorization');
         $this->authorization = base64_encode($username.':'.$password);
         $this->addHeader('Authorization: Basic '.$this->authorization);
     }
@@ -276,5 +277,19 @@ class WebApiContext extends BehatContext
     protected function addHeader($header)
     {
         $this->headers[] = $header;
+    }
+    
+    /**
+     * Removes a header identified by $headerName
+     *
+     * @param string $headerName
+     */
+    protected function removeHeader($headerName)
+    {
+        foreach ($this->headers as $headerIndex => $headerValue) {
+            if (strpos($headerValue, $headerName) === 0) {
+                unset($this->headers[$headerIndex]);
+            }
+        }
     }
 }
