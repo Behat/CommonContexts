@@ -1,10 +1,10 @@
 Extra Contexts for Behat
 ========================
 
-This additional contexts could be used as your feature suite's submobules,
+This additional contexts could be used as your feature suite's submodules,
 giving you extra steps and hooks right out of the box.
 
-How to Use Them
+How to use them
 ---------------
 
 To use those contexts, you should simply instantiate them with needed arguments
