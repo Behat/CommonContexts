@@ -57,10 +57,17 @@ class MinkRedirectContext extends RawMinkContext
     {
         $headers = $this->getSession()->getResponseHeaders();
 
-        assertArrayHasKey('Location', $headers, 'The response contains a "Location" header');
+        if (empty($headers['Location']) && empty($headers['location'])) {
+            throw new \RuntimeException('The response should contain a "Location" header');
+        }
 
         if (null !== $page) {
-            assertEquals($headers['Location'][0], $this->locatePath($page), 'The "Location" header points to the correct URI');
+            $header = empty($headers['Location']) ? $headers['Location'] : $headers['location'];
+            if (is_array($header)) {
+                $header = current($header);
+            }
+
+            assertEquals($header, $this->locatePath($page), 'The "Location" header points to the correct URI');
         }
 
         $client = $this->getClient();
