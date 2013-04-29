@@ -62,7 +62,7 @@ class MinkRedirectContext extends RawMinkContext
         }
 
         if (null !== $page) {
-            $header = empty($headers['Location']) ? $headers['Location'] : $headers['location'];
+            $header = empty($headers['Location']) ? $headers['location'] : $headers['Location'];
             if (is_array($header)) {
                 $header = current($header);
             }
