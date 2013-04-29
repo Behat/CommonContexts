@@ -67,7 +67,7 @@ class MinkRedirectContext extends RawMinkContext
                 $header = current($header);
             }
 
-            assertEquals($header, $this->locatePath($page), 'The "Location" header points to the correct URI');
+            assertEquals($header, $page, 'The "Location" header points to the correct URI');
         }
 
         $client = $this->getClient();
