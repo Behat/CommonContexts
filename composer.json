@@ -45,5 +45,11 @@
         "psr-0": {
             "Behat\\CommonContexts": ""
         }
+    },
+    
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.2.x-dev"
+        }
     }
 }
