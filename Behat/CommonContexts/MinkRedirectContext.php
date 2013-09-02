@@ -79,9 +79,9 @@ class MinkRedirectContext extends RawMinkContext
     /**
      * Returns current active mink session.
      *
-     * @return  Symfony\Component\BrowserKit\Client
+     * @return  \Symfony\Component\BrowserKit\Client
      *
-     * @throws  Behat\Mink\Exception\UnsupportedDriverActionException
+     * @throws  \Behat\Mink\Exception\UnsupportedDriverActionException
      */
     protected function getClient()
     {
