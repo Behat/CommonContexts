@@ -177,7 +177,21 @@ class WebApiContext extends BehatContext
         assertNotRegExp('/'.preg_quote($text).'/', $this->browser->getLastResponse()->getContent());
     }
 
-    /**
+	/**
+	 * Checks that response body contains JSON data.
+	 *
+	 * @param int $count
+	 *
+	 * @Then /^(?:the )?response should contain (\d+) json items$/
+	 */
+	public function theResponseShouldContainJsonItems($count)
+	{
+		$actual = json_decode($this->browser->getLastResponse()->getContent(), true);
+
+		assertCount(intval($count), $actual);
+	}
+
+	/**
      * Checks that response body contains JSON from PyString.
      *
      * @param PyStringNode $jsonString
@@ -201,7 +215,7 @@ class WebApiContext extends BehatContext
             assertEquals($etalon[$key], $actual[$key]);
         }
     }
-
+	
     /**
      * Prints last response body.
      *
