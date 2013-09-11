@@ -202,6 +202,18 @@ class WebApiContext extends BehatContext
         }
     }
 
+	/**
+	 * Checks that response body contains data from PyString.
+	 *
+	 * @param PyStringNode $jsonString
+	 *
+	 * @Then /^(?:the )?response should contain data:$/
+	 */
+	public function theResponseShouldContainData(PyStringNode $jsonString)
+	{
+		assertRegExp('/'.preg_quote(trim($this->replacePlaceHolder($jsonString->getRaw()))).'/', $this->browser->getLastResponse()->getContent());
+	}
+
     /**
      * Prints last response body.
      *
