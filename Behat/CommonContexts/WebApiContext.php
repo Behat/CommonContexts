@@ -217,13 +217,9 @@ class WebApiContext extends BehatContext
             );
         }
 
-        $etalonKeys = array_keys($etalon);
-        $actualKeys = array_keys($actual);
-        $keys       = array_intersect($etalonKeys, $actualKeys);
-
-        foreach ($keys as $key) {
-            assertArrayHasKey($key, $etalon);
-            assertEquals($etalon[$key], $actual[$key]);
+        foreach ($etalon as $key => $value) {
+            assertArrayHasKey($key, $actual);
+            assertEquals($value, $actual[$key]);
         }
     }
 
