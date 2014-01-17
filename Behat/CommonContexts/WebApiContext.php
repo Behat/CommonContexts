@@ -203,6 +203,31 @@ class WebApiContext extends BehatContext
     }
 
     /**
+     * @Given /^the response should contain partial json:$/
+     */
+    public function theResponseShouldContainPartialJson(PyStringNode $jsonString)
+    {
+
+        $etalon = json_decode($this->replacePlaceHolder($jsonString->getRaw()), true);
+        $actual = json_decode($this->browser->getLastResponse()->getContent(), true);
+
+        if (null === $etalon) {
+            throw new \RuntimeException(
+                "Can not convert etalon to json:\n".$this->replacePlaceHolder($jsonString->getRaw())
+            );
+        }
+
+        $etalonKeys = array_keys($etalon);
+        $actualKeys = array_keys($actual);
+        $keys       = array_intersect($etalonKeys, $actualKeys);
+
+        foreach ($keys as $key) {
+            assertArrayHasKey($key, $etalon);
+            assertEquals($etalon[$key], $actual[$key]);
+        }
+    }
+
+    /**
      * Prints last response body.
      *
      * @Then print response
@@ -279,7 +304,7 @@ class WebApiContext extends BehatContext
     {
         $this->headers[] = $header;
     }
-    
+
     /**
      * Removes a header identified by $headerName
      *
