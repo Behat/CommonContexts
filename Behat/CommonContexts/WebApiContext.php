@@ -203,7 +203,7 @@ class WebApiContext extends BehatContext
     }
 
     /**
-     * @Given /^the response should contain partial json:$/
+     * @Then /^(?:the )?response should contain partial json:$/
      */
     public function theResponseShouldContainPartialJson(PyStringNode $jsonString)
     {
@@ -217,9 +217,23 @@ class WebApiContext extends BehatContext
             );
         }
 
-        foreach ($etalon as $key => $value) {
+        $this->assertArrayPartiallyEquals($etalon, $actual);
+    }
+
+    /**
+     * Recursively checks that $actual contains the same key/values listed in $expected
+     * @param array $expected
+     * @param array $actual
+     */
+    protected function assertArrayPartiallyEquals(array $expected, array $actual)
+    {
+        foreach ($expected as $key => $value) {
             assertArrayHasKey($key, $actual);
-            assertEquals($value, $actual[$key]);
+            if (is_array($value)) {
+                $this->assertArrayPartiallyEquals($expected[$key], $actual[$key]);
+            } else {
+                assertEquals($value, $actual[$key]);
+            }
         }
     }
 
