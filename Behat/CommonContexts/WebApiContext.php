@@ -265,7 +265,7 @@ class WebApiContext extends BehatContext
      *
      * @return array
      */
-    protected function getHeaders()
+    public function getHeaders()
     {
         return $this->headers;
     }
