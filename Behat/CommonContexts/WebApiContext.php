@@ -203,6 +203,11 @@ class WebApiContext extends BehatContext
     }
 
     /**
+     * Checks that response body contains JSON from PyString.
+     * Only the keys present in the etalon will be checked.
+     *
+     * @param PyStringNode $jsonString
+     *
      * @Then /^(?:the )?response should contain partial json:$/
      */
     public function theResponseShouldContainPartialJson(PyStringNode $jsonString)
@@ -217,6 +222,7 @@ class WebApiContext extends BehatContext
             );
         }
 
+        assertThat($actual, isType('array'));
         $this->assertArrayPartiallyEquals($etalon, $actual);
     }
 
@@ -230,6 +236,7 @@ class WebApiContext extends BehatContext
         foreach ($expected as $key => $value) {
             assertArrayHasKey($key, $actual);
             if (is_array($value)) {
+                assertThat($actual[$key], isType('array'));
                 $this->assertArrayPartiallyEquals($expected[$key], $actual[$key]);
             } else {
                 assertEquals($value, $actual[$key]);
