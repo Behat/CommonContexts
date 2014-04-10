@@ -203,6 +203,39 @@ class WebApiContext extends BehatContext
     }
 
     /**
+     * Checks that response body contains JSON subset from PyString.
+     *
+     * @param PyStringNode $jsonString
+     *
+     * @Then /^(?:the )?response should contain the json subset:$/
+     */
+    public function theResponseShouldContainJsonSubset(PyStringNode $jsonString)
+    {
+        $expect = json_decode($this->replacePlaceHolder($jsonString->getRaw()), true);
+        $actual = json_decode($this->getBrowser()->getLastResponse()->getContent(), true);
+
+        if (null === $expect) {
+            throw new \RuntimeException(
+                "Can not convert string to json:\n".$this->replacePlaceHolder($jsonString->getRaw())
+            );
+        }
+        $this->assertArrayContainsRecursive($expect, $actual);
+    }
+
+    private function assertArrayContainsRecursive($expect, $actual)
+    {
+        foreach ($expect as $key => $val) {
+            assertArrayHasKey($key, $actual);
+            $actualVal = $actual[$key];
+            if (is_array($actualVal)) {
+                $this->assertContainsRecursive($expect[$key], $actualVal);
+            } else {
+                assertEquals($expect[$key], $actualVal);
+            }
+        }
+    }
+
+    /**
      * Prints last response body.
      *
      * @Then print response
