@@ -2,7 +2,6 @@
 
 namespace Behat\CommonContexts;
 
-use Behat\Behat\Context\BehatContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Symfony\Component\HttpKernel\KernelInterface;
