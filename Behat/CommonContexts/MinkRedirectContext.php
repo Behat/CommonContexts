@@ -6,15 +6,15 @@ require_once 'PHPUnit/Autoload.php';
 require_once 'PHPUnit/Framework/Assert/Functions.php';
 
 use Behat\MinkExtension\Context\RawMinkContext;
-
-use Behat\Mink\Exception\UnsupportedDriverActionException,
-    Behat\Mink\Driver\BrowserKitDriver;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\Mink\Driver\BrowserKitDriver;
 
 /**
  * Context class for managing redirects within an application.
  *
  * @author  Johannes M. Schmitt <schmittjoh@gmail.com>
  * @author  Marijn Huizendveld <marijn.huizendveld@gmail.com>
+ * @author  Saša Stamenković <umpirsky@gmail.com>
  */
 class MinkRedirectContext extends RawMinkContext
 {
@@ -31,6 +31,16 @@ class MinkRedirectContext extends RawMinkContext
     }
 
     /**
+     * Following redirects.
+     *
+     * @When /^I follow redirects$/
+     */
+    public function iFollowRedirects()
+    {
+        $this->getClient()->followRedirects(true);
+    }
+
+    /**
      * @param \Behat\Behat\Event\ScenarioEvent|\Behat\Behat\Event\OutlineExampleEvent $event
      *
      * @return void
@@ -40,7 +50,7 @@ class MinkRedirectContext extends RawMinkContext
     public function afterScenario($event)
     {
         if ($this->getSession()->getDriver() instanceof BrowserKitDriver) {
-            $this->getClient()->followRedirects(true);
+            $this->iFollowRedirects();
         }
     }
 
@@ -53,7 +63,7 @@ class MinkRedirectContext extends RawMinkContext
      *
      * @Then /^I (?:am|should be) redirected(?: to "([^"]*)")?$/
      */
-    public function iAmRedirected($page = null)
+    public function iAmRedirected($page = null, $follow = true)
     {
         $headers = $this->getSession()->getResponseHeaders();
 
@@ -72,8 +82,25 @@ class MinkRedirectContext extends RawMinkContext
 
         $client = $this->getClient();
 
-        $client->followRedirects(true);
+        if ($follow) {
+            $this->iFollowRedirects();
+        }
+
         $client->followRedirect();
+    }
+
+    /**
+     * Follow redirect instructions once.
+     *
+     * @param   string  $page
+     *
+     * @return  void
+     *
+     * @Then /^I (?:am|should be) redirected once(?: to "([^"]*)")?$/
+     */
+    public function iAmRedirectedOnce($page = null)
+    {
+        $this->iAmRedirected($page, false);
     }
 
     /**
