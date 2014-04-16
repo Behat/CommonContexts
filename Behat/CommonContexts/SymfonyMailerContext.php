@@ -93,7 +93,7 @@ class SymfonyMailerContext extends RawMinkContext implements KernelAwareInterfac
      * If no token has been given, the debug token of the last request will
      * be used.
      *
-     * @param string $token
+     * @param  string                                         $token
      * @return \Symfony\Component\HttpKernel\Profiler\Profile
      * @throws \RuntimeException
      */

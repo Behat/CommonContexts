@@ -12,16 +12,16 @@ use Behat\Mink\Driver\BrowserKitDriver;
 /**
  * Context class for managing redirects within an application.
  *
- * @author  Johannes M. Schmitt <schmittjoh@gmail.com>
- * @author  Marijn Huizendveld <marijn.huizendveld@gmail.com>
- * @author  Saša Stamenković <umpirsky@gmail.com>
+ * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @author Marijn Huizendveld <marijn.huizendveld@gmail.com>
+ * @author Saša Stamenković <umpirsky@gmail.com>
  */
 class MinkRedirectContext extends RawMinkContext
 {
     /**
      * Prevent following redirects.
      *
-     * @return  void
+     * @return void
      *
      * @When /^I do not follow redirects$/
      */
@@ -57,9 +57,9 @@ class MinkRedirectContext extends RawMinkContext
     /**
      * Follow redirect instructions.
      *
-     * @param   string  $page
+     * @param string $page
      *
-     * @return  void
+     * @return void
      *
      * @Then /^I (?:am|should be) redirected(?: to "([^"]*)")?$/
      */
@@ -92,9 +92,9 @@ class MinkRedirectContext extends RawMinkContext
     /**
      * Follow redirect instructions once.
      *
-     * @param   string  $page
+     * @param string $page
      *
-     * @return  void
+     * @return void
      *
      * @Then /^I (?:am|should be) redirected once(?: to "([^"]*)")?$/
      */
@@ -106,9 +106,9 @@ class MinkRedirectContext extends RawMinkContext
     /**
      * Returns current active mink session.
      *
-     * @return  \Symfony\Component\BrowserKit\Client
+     * @return \Symfony\Component\BrowserKit\Client
      *
-     * @throws  \Behat\Mink\Exception\UnsupportedDriverActionException
+     * @throws \Behat\Mink\Exception\UnsupportedDriverActionException
      */
     protected function getClient()
     {

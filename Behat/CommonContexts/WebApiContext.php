@@ -279,7 +279,7 @@ class WebApiContext extends BehatContext
     {
         $this->headers[] = $header;
     }
-    
+
     /**
      * Removes a header identified by $headerName
      *
