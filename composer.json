@@ -38,7 +38,8 @@
         "behat/mink-extension":         "*",
         "doctrine/doctrine-bundle":     "*",
         "doctrine/data-fixtures":       "*",
-        "kriswallsmith/buzz":           ">=0.5.0"
+        "kriswallsmith/buzz":           ">=0.5.0",
+        "phpunit/phpunit":              "~3.7"
     },
 
     "autoload": {
@@ -46,7 +47,7 @@
             "Behat\\CommonContexts": ""
         }
     },
-    
+
     "extra": {
         "branch-alias": {
             "dev-master": "1.2.x-dev"
