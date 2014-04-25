@@ -228,7 +228,7 @@ class WebApiContext extends BehatContext
             assertArrayHasKey($key, $actual);
             $actualVal = $actual[$key];
             if (is_array($actualVal)) {
-                $this->assertContainsRecursive($expect[$key], $actualVal);
+                $this->assertArrayContainsRecursive($expect[$key], $actualVal);
             } else {
                 assertEquals($expect[$key], $actualVal);
             }
