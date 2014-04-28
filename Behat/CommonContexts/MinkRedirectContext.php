@@ -2,8 +2,7 @@
 
 namespace Behat\CommonContexts;
 
-require_once 'PHPUnit/Autoload.php';
-require_once 'PHPUnit/Framework/Assert/Functions.php';
+require_once 'src/Framework/Assert/Functions.php';
 
 use Behat\MinkExtension\Context\RawMinkContext;
 
