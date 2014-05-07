@@ -7,7 +7,7 @@ use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Context\BehatContext;
 
 /**
- * Before requireing (or adding to autoload) this context,
+ * Before requiring (or adding to autoload) this context,
  * don't forget to set this constant:
  *
  *  define('BEHAT1_FEATURES_PATH', '');

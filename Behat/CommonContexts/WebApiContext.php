@@ -8,8 +8,6 @@ use Behat\Behat\Context\BehatContext;
 use Buzz\Message\Request;
 use Buzz\Browser;
 
-require_once 'src/Framework/Assert/Functions.php';
-
 /**
  * Provides web API description definitions.
  *
@@ -149,7 +147,7 @@ class WebApiContext extends BehatContext
      */
     public function theResponseCodeShouldBe($code)
     {
-        assertSame(intval($code), $this->browser->getLastResponse()->getStatusCode());
+        \PHPUnit_Framework_Assert::assertSame(intval($code), $this->browser->getLastResponse()->getStatusCode());
     }
 
     /**
@@ -161,7 +159,7 @@ class WebApiContext extends BehatContext
      */
     public function theResponseShouldContain($text)
     {
-        assertRegExp('/'.preg_quote($text).'/', $this->browser->getLastResponse()->getContent());
+        \PHPUnit_Framework_Assert::assertRegExp('/'.preg_quote($text).'/', $this->browser->getLastResponse()->getContent());
     }
 
     /**
@@ -173,7 +171,7 @@ class WebApiContext extends BehatContext
      */
     public function theResponseShouldNotContain($text)
     {
-        assertNotRegExp('/'.preg_quote($text).'/', $this->browser->getLastResponse()->getContent());
+        \PHPUnit_Framework_Assert::assertNotRegExp('/'.preg_quote($text).'/', $this->browser->getLastResponse()->getContent());
     }
 
     /**
@@ -194,10 +192,10 @@ class WebApiContext extends BehatContext
             );
         }
 
-        assertCount(count($etalon), $actual);
+        \PHPUnit_Framework_Assert::assertCount(count($etalon), $actual);
         foreach ($actual as $key => $needle) {
-            assertArrayHasKey($key, $etalon);
-            assertEquals($etalon[$key], $actual[$key]);
+            \PHPUnit_Framework_Assert::assertArrayHasKey($key, $etalon);
+            \PHPUnit_Framework_Assert::assertEquals($etalon[$key], $actual[$key]);
         }
     }
 
@@ -278,7 +276,7 @@ class WebApiContext extends BehatContext
     {
         $this->headers[] = $header;
     }
-    
+
     /**
      * Removes a header identified by $headerName
      *

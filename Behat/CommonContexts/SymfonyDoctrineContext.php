@@ -3,7 +3,6 @@
 namespace Behat\CommonContexts;
 
 use Behat\Behat\Context\BehatContext;
-use Behat\Behat\Event\ScenarioEvent;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\EntityManager;

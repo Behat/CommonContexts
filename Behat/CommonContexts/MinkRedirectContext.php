@@ -2,8 +2,6 @@
 
 namespace Behat\CommonContexts;
 
-require_once 'src/Framework/Assert/Functions.php';
-
 use Behat\MinkExtension\Context\RawMinkContext;
 
 use Behat\Mink\Exception\UnsupportedDriverActionException,
@@ -66,7 +64,7 @@ class MinkRedirectContext extends RawMinkContext
                 $header = current($header);
             }
 
-            assertEquals($header, $this->locatePath($page), 'The "Location" header points to the correct URI');
+            \PHPUnit_Framework_Assert::assertEquals($header, $this->locatePath($page), 'The "Location" header points to the correct URI');
         }
 
         $client = $this->getClient();
