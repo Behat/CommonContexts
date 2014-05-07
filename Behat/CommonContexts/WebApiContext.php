@@ -8,8 +8,7 @@ use Behat\Behat\Context\BehatContext;
 use Buzz\Message\Request;
 use Buzz\Browser;
 
-require_once 'PHPUnit/Autoload.php';
-require_once 'PHPUnit/Framework/Assert/Functions.php';
+require_once 'src/Framework/Assert/Functions.php';
 
 /**
  * Provides web API description definitions.
