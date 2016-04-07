@@ -1,3 +1,8 @@
+THIS PROJECT IS ABANDONED
+=========================
+
+This project is effectively abandoned. If you want to take ownership or contribute to it, contact @everzet.
+
 Extra Contexts for Behat
 ========================
 
