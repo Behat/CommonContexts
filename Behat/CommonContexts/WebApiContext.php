@@ -200,6 +200,48 @@ class WebApiContext extends BehatContext
     }
 
     /**
+     * Checks that response body contains JSON from PyString.
+     * Only the keys present in the etalon will be checked.
+     *
+     * @param PyStringNode $jsonString
+     *
+     * @Then /^(?:the )?response should contain partial json:$/
+     */
+    public function theResponseShouldContainPartialJson(PyStringNode $jsonString)
+    {
+
+        $etalon = json_decode($this->replacePlaceHolder($jsonString->getRaw()), true);
+        $actual = json_decode($this->browser->getLastResponse()->getContent(), true);
+
+        if (null === $etalon) {
+            throw new \RuntimeException(
+                "Can not convert etalon to json:\n".$this->replacePlaceHolder($jsonString->getRaw())
+            );
+        }
+
+        assertThat($actual, isType('array'));
+        $this->assertArrayPartiallyEquals($etalon, $actual);
+    }
+
+    /**
+     * Recursively checks that $actual contains the same key/values listed in $expected
+     * @param array $expected
+     * @param array $actual
+     */
+    protected function assertArrayPartiallyEquals(array $expected, array $actual)
+    {
+        foreach ($expected as $key => $value) {
+            assertArrayHasKey($key, $actual);
+            if (is_array($value)) {
+                assertThat($actual[$key], isType('array'));
+                $this->assertArrayPartiallyEquals($expected[$key], $actual[$key]);
+            } else {
+                assertEquals($value, $actual[$key]);
+            }
+        }
+    }
+
+    /**
      * Prints last response body.
      *
      * @Then print response
