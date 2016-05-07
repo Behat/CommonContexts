@@ -109,6 +109,17 @@ class FeatureContext extends BehatContext
 
 ```
 
+Using SymfonyMailerContext
+---------------
+
+In addition to enabling the Context via `->useContext()`, you must also ensure that profiler is enabled to collect required data:
+
+```yaml
+framework:
+    profiler:
+        collect: true
+```
+
 
 
 
