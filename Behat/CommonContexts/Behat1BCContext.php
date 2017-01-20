@@ -47,28 +47,35 @@ class Behat1BCContext extends BehatContext implements ClosuredContextInterface, 
         }
     }
 
-    public function getStepDefinitionResources() {
+    public function getStepDefinitionResources()
+    {
         if (file_exists(BEHAT1_FEATURES_PATH.'/steps')) {
             return glob(BEHAT1_FEATURES_PATH.'/steps/*.php');
         }
+
         return array();
     }
 
-    public function getHookDefinitionResources() {
+    public function getHookDefinitionResources()
+    {
         if (file_exists(BEHAT1_FEATURES_PATH.'/support/hooks.php')) {
             return array(BEHAT1_FEATURES_PATH.'/support/hooks.php');
         }
+
         return array();
     }
 
-    public function getTranslationResources() {
+    public function getTranslationResources()
+    {
         if (file_exists(BEHAT1_FEATURES_PATH.'/steps/i18n')) {
             return glob(BEHAT1_FEATURES_PATH.'/steps/i18n/*.xliff');
         }
+
         return array();
     }
 
-    public function __call($name, array $args) {
+    public function __call($name, array $args)
+    {
         if (isset($this->$name) && is_callable($this->$name)) {
             return call_user_func_array($this->$name, $args);
         } else {
