@@ -1,6 +1,7 @@
 {
     "name":         "behat/common-contexts",
-    "description":  "Commonly used contexts for Behat",
+    "abandoned": true,
+    "description":  "Commonly used contexts for Behat 2.x",
     "keywords":     ["BDD", "Behat", "Symfony2", "Context"],
     "homepage":     "http://behat.org/",
     "type":         "library",
