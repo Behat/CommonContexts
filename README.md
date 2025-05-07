@@ -1,10 +1,10 @@
 THIS PROJECT IS ABANDONED
 =========================
 
-This project is effectively abandoned. If you want to take ownership or contribute to it, contact @everzet.
+This project (which was never updated for Behat 3.x) is abandoned and will not receive further updates.
 
-Extra Contexts for Behat
-========================
+Extra Contexts for Behat 2.x
+============================
 
 This additional contexts could be used as your feature suite's submodules,
 giving you extra steps and hooks right out of the box.
